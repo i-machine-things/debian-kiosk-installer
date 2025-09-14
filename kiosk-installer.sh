@@ -32,7 +32,7 @@ if [ -e "/etc/X11/xorg.conf" ]; then
 fi
 cat > /etc/X11/xorg.conf << EOF
 Section "ServerFlags"
-    Option "DontVTSwitch" "true"
+    Option "DontVTSwitch" "false"
 EndSection
 EOF
 
