@@ -51,11 +51,11 @@ EOF
 if [ -e "/home/kiosk/.config/openbox/autostart" ]; then
   mv /home/kiosk/.config/openbox/autostart /home/kiosk/.config/openbox/autostart.backup
 fi
-cat > /home/kiosk/.config/openbox/autostart << EOF
-#!/bin/bash
 
 KIOSK_URL="https://www.example.com/"
 
+cat > /home/kiosk/.config/openbox/autostart << EOF
+#!/bin/bash
 
 # Wait for the Openbox session to start
 sleep 1
