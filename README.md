@@ -7,7 +7,7 @@ Small installer script to setup a minimal kiosk with Chromium for Debian based L
 * Download this installer, make it executable and run it
 
   ```shell
-  wget https://raw.githubusercontent.com/josfaber/debian-kiosk-installer/master/kiosk-installer.sh; chmod +x kiosk-installer.sh; ./kiosk-installer.sh
+  wget https://raw.githubusercontent.com/i-machine-things/debian-kiosk-installer/master/kiosk-installer.sh; chmod +x kiosk-installer.sh; ./kiosk-installer.sh
   ```
 
 If you are installing to a Raspberry Pi, change chromium to chromium-browser in the install script (both in apt line and startup command)

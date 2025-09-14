@@ -11,6 +11,7 @@ apt-get install \
     openbox \
     lightdm \
     locales \
+    xdotool \
     -y
 
 # dir
@@ -55,7 +56,28 @@ cat > /home/kiosk/.config/openbox/autostart << EOF
 
 KIOSK_URL="https://www.example.com/"
 
+
+# Wait for the Openbox session to start
+sleep 1
+
+# Disable X.org screensaver and power management
+xset s noblank
+xset s off
+xset -dpms
+
+
+# Hide the mouse cursor after a period of inactivity
 unclutter -idle 0.1 -grab -root &
+
+# Start a background loop to refresh Chromium every hour (3600 seconds)
+# NOTE: The refresh interval can be adjusted here.
+(
+  while true; do
+    sleep 900
+    # Find the Chromium window and send a Ctrl+F5 keypress
+    xdotool search --onlyvisible --class "chromium" windowactivate key "ctrl+F5"
+  done
+) &
 
 while :
 do
@@ -71,7 +93,6 @@ do
     --disable-suggestions-service \
     --disable-save-password-bubble \
     --disable-session-crashed-bubble \
-    --incognito \
     --kiosk-idle-timeout-ms=0 \
     --kiosk
     "$KIOSK_URL"
