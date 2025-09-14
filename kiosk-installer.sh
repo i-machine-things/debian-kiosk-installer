@@ -53,7 +53,7 @@ fi
 cat > /home/kiosk/.config/openbox/autostart << EOF
 #!/bin/bash
 
-KIOSK_URL="https://neave.tv/"
+KIOSK_URL="https://www.example.com/"
 
 unclutter -idle 0.1 -grab -root &
 
@@ -72,7 +72,9 @@ do
     --disable-save-password-bubble \
     --disable-session-crashed-bubble \
     --incognito \
-    --kiosk $KIOSK_URL
+    --kiosk-idle-timeout-ms=0 \
+    --kiosk
+    "$KIOSK_URL"
   sleep 5
 done &
 EOF
