@@ -52,8 +52,6 @@ if [ -e "/home/kiosk/.config/openbox/autostart" ]; then
   mv /home/kiosk/.config/openbox/autostart /home/kiosk/.config/openbox/autostart.backup
 fi
 
-KIOSK_URL="https://www.example.com/"
-
 cat > /home/kiosk/.config/openbox/autostart << EOF
 #!/bin/bash
 
@@ -94,8 +92,8 @@ do
     --disable-save-password-bubble \
     --disable-session-crashed-bubble \
     --kiosk-idle-timeout-ms=0 \
-    --kiosk
-    "$KIOSK_URL"
+    --kiosk \
+    "https://www.example.com/"&
   sleep 5
 done &
 EOF
