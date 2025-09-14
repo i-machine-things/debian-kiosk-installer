@@ -42,7 +42,7 @@ if [ -e "/etc/lightdm/lightdm.conf" ]; then
 fi
 cat > /etc/lightdm/lightdm.conf << EOF
 [Seat:*]
-xserver-command=X -nocursor -nolisten tcp
+xserver-command=X -nolisten tcp
 autologin-user=kiosk
 autologin-session=openbox
 EOF
