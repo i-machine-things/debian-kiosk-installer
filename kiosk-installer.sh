@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#run this script as root or sudo
+
 # be new
 apt-get update
 
