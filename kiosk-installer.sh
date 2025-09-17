@@ -38,7 +38,7 @@ Section "ServerFlags"
 EndSection
 EOF
 
-# create config
+# create configs
 if [ -e "/etc/lightdm/lightdm.conf" ]; then
   mv /etc/lightdm/lightdm.conf /etc/lightdm/lightdm.conf.backup
 fi
@@ -49,13 +49,77 @@ autologin-user=kiosk
 autologin-session=openbox
 EOF
 
+if [ -e "/home/kiosk/.config/kiosk.conf" ]; then
+  mv /home/kiosk/.config/kiosk.conf
+fi
+cat > /home/kiosk/.config/kiosk.conf << EOF
+"www.example.com"
+EOF
+
 # create autostart
+
 if [ -e "/home/kiosk/.config/openbox/autostart" ]; then
   mv /home/kiosk/.config/openbox/autostart /home/kiosk/.config/openbox/autostart.backup
 fi
 
 cat > /home/kiosk/.config/openbox/autostart << EOF
 #!/bin/bash
+
+CONFIG_FILE="/home/kiosk/.config/kiosk.conf"
+
+options=(
+    "Armbian Login"
+    "Kiosk Mode"
+    "Change Kiosk url"
+)
+
+
+# Display menu
+echo "Please choose an option:"
+for i in "${!options[@]}"; do
+    printf "%d) %s\n" $((i+1)) "${options[$i]}"
+done
+
+# Get user input
+while true; do
+    read -p "Enter your choice [1-${#options[@]}]: " choice
+    
+    # Validate input
+    if [[ $choice =~ ^[0-9]+$ ]] && [ $choice -ge 1 ] && [ $choice -le ${#options[@]} ]; then
+        break
+    else
+        echo "Invalid choice. Please enter a number between 1 and ${#options[@]}."
+    fi
+done
+
+# Process selection
+selected="${options[$((choice-1))]}"
+echo "You selected: $selected"
+
+# Add your action handling below
+case $choice in
+    1)
+        echo "Exiting to Armbian Login"
+        exit 0
+        ;;
+    2)
+        echo "Continueing to Kiosk Mode"
+        ;;
+    3)
+        echo "Current URL: $(cat $CONFIG_FILE)"
+        read -p "Enter new URL: " new_url
+        if [ -n "$new_url" ]; then
+            echo "$new_url" > "$CONFIG_FILE"
+            echo "URL updated successfully"
+            # Optional: add command to restart Chromium here
+        else
+            echo "URL cannot be empty"
+        fi
+        ;;
+    #*)
+    #    echo "No action defined for this option"
+    #    ;;
+esac
 
 # Wait for the Openbox session to start
 sleep 1
@@ -95,7 +159,7 @@ do
     --disable-session-crashed-bubble \
     --kiosk-idle-timeout-ms=0 \
     --kiosk \
-    "https://www.example.com/"&
+    "$(cat $CONFIG_FILE)"&
   sleep 5
 done &
 EOF
