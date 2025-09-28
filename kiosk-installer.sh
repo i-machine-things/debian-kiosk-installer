@@ -17,6 +17,7 @@ apt-get install \
     network-manager \
     wpasupplicant \
     wireless-tools \
+    xterm \
     -y
 
 # dir
